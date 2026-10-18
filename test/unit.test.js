@@ -120,6 +120,37 @@ test('isDecorative: 过滤 logo / icon / sprite 等命名', () => {
   assert.equal(X.isDecorative('https://img.alicdn.com/a/goods.jpg', { className: 'iconfont' }), true);
 });
 
+test('isDecorative: 过滤营业执照 / 举报入口等站点界面图', () => {
+  const decoAlts = [
+    '营业执照',
+    '违法和不良信息举报中心',
+    '无障碍服务',
+    '客服二维码',
+    '国家知识产权公共查询',
+    '淘宝',
+  ];
+  for (const alt of decoAlts) {
+    assert.equal(X.isDecorative('https://img.alicdn.com/O1CN01abc.jpg', { alt }), true, alt);
+  }
+  // 商品图 alt 不受影响
+  assert.equal(
+    X.isDecorative('https://img.alicdn.com/O1CN01abc.jpg', { alt: 'instax mini 系列 一次成像相机' }),
+    false
+  );
+  assert.equal(X.isDecorative('https://img.alicdn.com/O1CN01abc.jpg', { alt: '商品主图 1' }), false);
+});
+
+test('collectCandidates: 跳过页头页脚中的站点图片', () => {
+  const html = `
+    <header><img src="https://img.alicdn.com/O1CN01header.jpg" width="800" height="800" alt="站点导航"></header>
+    <main><img src="https://img.alicdn.com/O1CN01main.jpg" width="800" height="800" alt="商品主图"></main>
+    <footer><img src="https://img.alicdn.com/O1CN01footer.jpg" width="800" height="800" alt="备案信息"></footer>
+  `;
+  const dom = htmlDom(html);
+  const urls = X.collectCandidates(dom.window.document, dom.window).map((it) => it.url);
+  assert.deepEqual(urls, ['https://img.alicdn.com/O1CN01main.jpg']);
+});
+
 test('extractBgUrls: 支持多层背景图与引号', () => {
   assert.deepEqual(X.extractBgUrls(`url("./a.jpg"), url('/b.jpg')`), ['./a.jpg', '/b.jpg']);
   assert.deepEqual(X.extractBgUrls('none'), []);

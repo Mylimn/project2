@@ -53,6 +53,37 @@
   ]);
 
   /**
+   * 站点界面类图片的 alt 文案特征：营业执照、举报入口、无障碍服务、客服二维码等。
+   * 这些图片往往尺寸很大（例如资质证照），仅靠尺寸和文件名无法过滤，只能看 alt。
+   */
+  const DECORATIVE_ALT_PATTERNS = [
+    /营业执照/,
+    /许可证/,
+    /举报/,
+    /违规/,
+    /无障碍/,
+    /二维码/,
+    /客服/,
+    /防伪/,
+    /身份验证/,
+    /公共查询/,
+    /知识产权/,
+    /备案/,
+    /广告/,
+    /分享/,
+    /收藏/,
+    /购物车/,
+    /优惠券/,
+    /红包/,
+    /关注店铺/,
+    /正品保障/,
+    /打假/,
+    /七天无理由/,
+    /退货/,
+    /运费险/,
+  ];
+
+  /**
    * 平台识别规则：只有商品详情页才注入悬浮按钮。
    * 如需支持更多路由（例如各平台商家后台的新版详情页），在此追加一行正则即可。
    */
@@ -281,6 +312,14 @@
 
     const alt = (meta && meta.alt ? String(meta.alt) : '').toLowerCase().trim();
     if (alt && DECORATIVE_SEGMENTS.has(alt)) return true;
+    if (alt) {
+      // 纯平台名（站点 logo 的 alt 常见写法）
+      if (/^(淘宝|天猫|京东|拼多多|阿里巴巴|taobao|tmall|jd|pinduoduo|tmall\.com|taobao\.com)$/.test(alt)) {
+        return true;
+      }
+      // 营业执照、举报入口、无障碍、客服二维码等站点界面图
+      if (alt.length <= 24 && DECORATIVE_ALT_PATTERNS.some((re) => re.test(alt))) return true;
+    }
 
     const cls = meta && meta.className ? String(meta.className).toLowerCase() : '';
     if (cls) {
@@ -362,6 +401,8 @@
     const imgs = doc.querySelectorAll('img');
     for (const img of imgs) {
       if (img.closest && img.closest('svg')) continue;
+      // 站点头部 / 页脚通常是 logo、备案资质、客服二维码等，不参与商品图提取
+      if (img.closest && img.closest('header, footer')) continue;
       const { w, h } = readImageSize(img);
       const alt = img.getAttribute('alt') || '';
       const className = img.getAttribute('class') || '';
@@ -463,6 +504,7 @@
       // 页面整体背景（平铺纹理）不作为商品图
       if (el === doc.documentElement || el === doc.body) continue;
       if (el.closest && el.closest('svg')) continue;
+      if (el.closest && el.closest('header, footer')) continue;
 
       let value = '';
       const inline = el.getAttribute && el.getAttribute('style');
