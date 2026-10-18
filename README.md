@@ -178,7 +178,7 @@ Edge（Chromium）→ 品牌版 Chrome（会跳过并提示，因为命令行无
 
 ## 版本管理
 
-项目使用 Git 做本地版本管理（不推远端），按里程碑提交：
+项目使用 Git 做版本管理，远端仓库为 [Mylimn/project2](https://github.com/Mylimn/project2)，按里程碑提交：
 
 ```
 chore: 初始化扩展项目与仓库配置
