@@ -1,0 +1,167 @@
+/**
+ * 悬浮按钮与提示样式
+ * 该文件通过 <link> 注入到 Shadow DOM 中，避免被电商页面样式污染。
+ * :host 指向 #imgx-root 宿主，其余选择器只作用于 Shadow 内部。
+ */
+
+:host {
+  all: initial;
+  position: fixed;
+  right: 24px;
+  bottom: 96px;
+  z-index: 2147483646;
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  /* 防止宿主元素影响页面布局与打印 */
+  contain: layout style;
+}
+
+#imgx-fab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  margin: 0;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #4f7cff 0%, #7c4dff 100%);
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 8px 20px rgba(58, 92, 220, 0.35), 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  outline: none;
+  transform: translateZ(0);
+}
+
+#imgx-fab:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(58, 92, 220, 0.45), 0 3px 8px rgba(0, 0, 0, 0.14);
+  filter: brightness(1.06);
+}
+
+#imgx-fab:active {
+  transform: translateY(0) scale(0.99);
+  box-shadow: 0 6px 14px rgba(58, 92, 220, 0.3), 0 1px 4px rgba(0, 0, 0, 0.14);
+}
+
+#imgx-fab:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.95), 0 0 0 6px rgba(79, 124, 255, 0.75),
+    0 10px 24px rgba(58, 92, 220, 0.4);
+}
+
+#imgx-fab:disabled {
+  cursor: progress;
+  opacity: 0.92;
+  transform: none;
+}
+
+#imgx-fab[data-state="error"] {
+  background: linear-gradient(135deg, #f2665c 0%, #d9363e 100%);
+}
+
+.imgx-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  display: block;
+}
+
+#imgx-fab[data-state="loading"] .imgx-icon {
+  animation: imgx-spin 0.9s linear infinite;
+}
+
+.imgx-label {
+  white-space: nowrap;
+}
+
+#imgx-toast {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 12px);
+  box-sizing: border-box;
+  max-width: 300px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(17, 24, 39, 0.92);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  white-space: normal;
+  word-break: break-word;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+#imgx-toast[hidden] {
+  display: none;
+}
+
+#imgx-toast.imgx-show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#imgx-toast[data-kind="success"] {
+  background: rgba(21, 101, 52, 0.95);
+}
+
+#imgx-toast[data-kind="error"] {
+  background: rgba(153, 27, 27, 0.95);
+}
+
+@keyframes imgx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  :host {
+    right: 16px;
+    bottom: 80px;
+  }
+
+  #imgx-fab {
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+
+  #imgx-toast {
+    max-width: 240px;
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #imgx-fab,
+  #imgx-toast {
+    transition: none;
+  }
+
+  #imgx-fab[data-state="loading"] .imgx-icon {
+    animation: none;
+  }
+}
+
+@media print {
+  :host {
+    display: none !important;
+  }
+}
