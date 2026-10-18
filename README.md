@@ -94,7 +94,7 @@ test/
 cd test
 npm install
 
-# 单元测试（jsdom，12 个用例）
+# 单元测试（jsdom，14 个用例）
 npm test
 
 # 端到端测试（默认无头模式，33 项检查）
@@ -165,6 +165,8 @@ feat: 实现后台消息路由与下载服务
 feat: 实现 gallery 展示与批量 PNG 下载
 test: 补充单测与 Chrome 端到端测试
 docs: 完善安装与使用说明
+fix: 过滤营业执照等站点界面类图片
+docs: 补充使用风险与合规说明
 ```
 
 测试产物（`test/node_modules/`、`test/tmp/`、`test/downloads/`、`test/.browsers/` 等）
