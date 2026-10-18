@@ -34,12 +34,14 @@
 其他页面（首页、搜索页、列表页等）不会注入按钮；如需扩展，修改
 [extract.js](extract.js) 中的 `PLATFORM_RULES` 即可。
 
-## 安装
+## 下载与安装
 
-1. 打开 Chrome / Edge，访问 `chrome://extensions`（Edge 为 `edge://extensions`）。
-2. 打开右上角「开发者模式」。
-3. 点击「加载已解压的扩展程序」，选择本项目根目录（包含 `manifest.json` 的目录）。
-4. 建议在工具栏的扩展菜单中把本扩展固定，方便查看角标数量。
+1. 从 [Releases](https://github.com/Mylimn/project2/releases/latest) 下载 `imagegrab-v1.0.0.zip` 并解压。
+   压缩包只包含扩展运行文件，解压后应能看到 `manifest.json`。
+2. 打开 Chrome / Edge，访问 `chrome://extensions`（Edge 为 `edge://extensions`）。
+3. 打开右上角「开发者模式」。
+4. 点击「加载已解压的扩展程序」，选择上一步解压出的文件夹（包含 `manifest.json` 的目录）。
+5. 建议在工具栏的扩展菜单中把本扩展固定，方便查看角标数量。
 
 > 品牌版 Chrome 137+ 已移除命令行的 `--load-extension` 参数，但**手动加载已解压扩展不受影响**。
 > 自动化测试因此优先使用 Chrome for Testing 或 Microsoft Edge（见下文）。

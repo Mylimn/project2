@@ -110,6 +110,19 @@ code {
   word-break: break-word;
 }
 
+/* 正文中的下载链接 */
+.text-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.text-link:hover {
+  color: var(--primary-2);
+}
+
 ::selection {
   background: rgba(79, 124, 255, 0.22);
 }
