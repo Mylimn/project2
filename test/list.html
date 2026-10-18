@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>商品列表 - 非详情页</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+        background: #fff;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      img {
+        width: 100%;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>商品列表页（非详情页）</h1>
+    <p>用于验证悬浮按钮不会出现在非商品详情页。</p>
+    <div class="grid">
+      <img src="./img/product-1.jpg" width="800" height="600" alt="商品 1" />
+      <img src="./img/product-2.jpg" width="640" height="480" alt="商品 2" />
+      <img src="./img/product-3.jpg" width="1200" height="1200" alt="商品 3" />
+    </div>
+  </body>
+</html>

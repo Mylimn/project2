@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>测试商品 - 淘宝详情页</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+        background: #f7f8fa;
+        color: #1f2937;
+      }
+      header.site-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #e5e7eb;
+        font-weight: 600;
+      }
+      h1 {
+        font-size: 20px;
+      }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+        align-items: start;
+      }
+      .gallery img,
+      .gallery video,
+      .gallery div {
+        max-width: 100%;
+        border-radius: 10px;
+        background: #fff;
+      }
+      .decorations {
+        margin-top: 32px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        opacity: 0.9;
+      }
+      .spacer {
+        height: 2400px;
+        margin-top: 24px;
+        background: repeating-linear-gradient(
+          45deg,
+          #eef1f6,
+          #eef1f6 12px,
+          #f7f8fa 12px,
+          #f7f8fa 24px
+        );
+        border-radius: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <img src="./img/logo-icon.png" width="32" height="32" class="logo" alt="站点 logo" />
+      测试电商站点
+    </header>
+
+    <main>
+      <h1>测试商品：图片提取覆盖用例</h1>
+
+      <section class="gallery" id="gallery">
+        <!-- 1. 普通 img -->
+        <img id="main" src="./img/product-1.jpg" width="800" height="800" alt="商品主图 1" />
+
+        <!-- 2. 懒加载：src 为 1x1 占位，真实地址在 data-src -->
+        <img
+          id="lazy"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          data-src="http://img.alicdn.com:__PORT__/img/product-2.jpg"
+          width="640"
+          height="480"
+          alt="懒加载商品图"
+        />
+
+        <!-- 3. srcset：应取 1200w 的大图 -->
+        <img
+          id="responsive"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          srcset="./img/small-thumb.png 200w, ./img/product-3.jpg 1200w"
+          width="1200"
+          height="1200"
+          alt="响应式商品图"
+        />
+
+        <!-- 4. 内联背景图 -->
+        <div
+          id="bg-inline"
+          style="width: 520px; height: 520px; background-image: url('./img/product-4.jpg'); background-size: cover"
+          aria-label="背景商品图 4"
+        ></div>
+
+        <!-- 5. 淘宝缩略图后缀，应清洗为 product-1.jpg 并与主图去重 -->
+        <img id="thumb-duplicate" src="./img/product-1.jpg_400x400.jpg" width="400" height="400" alt="重复缩略图" />
+
+        <!-- 6. picture/source srcset -->
+        <picture>
+          <source srcset="./img/product-5.jpg 900w" />
+          <img id="picture" src="./img/product-5.jpg" width="900" height="900" alt="picture 商品图" />
+        </picture>
+
+        <!-- 7. 多层背景图 -->
+        <div
+          id="bg-multi"
+          style="
+            width: 480px;
+            height: 480px;
+            background-image: url('./img/product-6.jpg'), url('./img/product-7.jpg');
+            background-size: cover;
+          "
+          aria-label="背景商品图 6 和 7"
+        ></div>
+
+        <!-- 8. video poster -->
+        <video id="video-poster" poster="./img/product-8.jpg" width="640" height="360" controls></video>
+
+        <!-- 9. 加载失败的图片，用于验证 gallery 的失败占位 -->
+        <img id="broken" src="./img/missing.jpg" width="600" height="600" alt="加载失败的图" />
+      </section>
+
+      <section class="decorations" id="decorations">
+        <img id="logo" src="./img/logo-icon.png" width="32" height="32" class="logo" alt="logo" />
+        <img id="pixel" src="./img/pixel.png" width="1" height="1" alt="" />
+        <img id="small" src="./img/small-banner.png" width="80" height="80" alt="80 像素小图" />
+        <!-- 文件名含 icon，即使尺寸很大也应被过滤 -->
+        <img id="icon-named" src="./img/product-icon.png" width="800" height="800" alt="icon" />
+        <!-- class 含 sprite，背景图应被过滤 -->
+        <div
+          id="sprite"
+          class="sprite-bg"
+          style="width: 400px; height: 400px; background-image: url('./img/sprite-sheet.png')"
+        ></div>
+        <img
+          id="data-uri"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          width="1"
+          height="1"
+          alt="占位图"
+        />
+      </section>
+
+      <div class="spacer" aria-hidden="true"></div>
+    </main>
+
+    <script>
+      // 模拟常见电商站的滚动懒加载：滚动时把 data-src 写入 src
+      document.addEventListener(
+        'scroll',
+        function () {
+          document.querySelectorAll('img[data-src]').forEach(function (img) {
+            var src = img.getAttribute('src') || '';
+            if (src.indexOf('data:') === 0) img.src = img.getAttribute('data-src');
+          });
+        },
+        { passive: true }
+      );
+    </script>
+  </body>
+</html>

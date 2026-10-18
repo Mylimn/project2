@@ -4,6 +4,7 @@ test/downloads/
 test/profile/
 test/tmp/
 test/out/
+test/.browsers/
 
 # 日志与系统文件
 *.log
