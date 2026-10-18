@@ -1,0 +1,17 @@
+# 依赖与测试产物
+test/node_modules/
+test/downloads/
+test/profile/
+test/tmp/
+test/out/
+
+# 日志与系统文件
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.vscode/
+.idea/
